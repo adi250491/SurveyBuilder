@@ -1,0 +1,649 @@
+<div class="createSurvey">
+	<div id="sub-header" style="margin-bottom: 30px;">
+		<h2>
+			<span ng-if="isEditVal == false">Create Survey</span>
+			<span ng-if="isEditVal == true">Edit Survey - {{EditSurveyQuestion.surveyName.sname}}</span>
+		</h2>
+		<form name="createSurveyForm" ng-submit="savesurvey()" novalidate>
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<input ng-if="isEditVal == false" type="text" class="col-sm-8 form-control" placeholder="Type Survey Name..." ng-model="surveyName.sname" name="surveyName" required>
+					
+					<input ng-if="isEditVal == true" type="text" class="col-sm-8 form-control" value="{{EditSurveyQuestion.surveyName.sname}}" ng-model="EditSurveyQuestion.surveyName.sname" name="surveyName" required>
+					
+					 <span ng-show="createSurveyForm.surveyName.$dirty && createSurveyForm.surveyName.$error.required && !createSurveyForm.surveyName.$pristine">Please enter survey name!</span>
+					<!--
+					<div ng-show="createSurveyForm.surveyName.$touched && createSurveyForm.surveyName.$invalid" class="errormsg">Please enter survey name!</div>-->
+				</div>
+			</div>	
+			<div class="row">
+				<div class="form-group col-sm-6">
+				
+					<textarea ng-if="isEditVal == false" rows="4" cols="50" class="form-control col-sm-12" placeholder="Type Survey Description..." ng-model="surveyDesc.sdesc" name="surveyDesc"required></textarea>
+					
+					<textarea ng-if="isEditVal == true" rows="4" cols="50" class="form-control col-sm-12" value="{{EditSurveyQuestion.surveyDesc.sdesc}}" ng-model="EditSurveyQuestion.surveyDesc.sdesc" name="surveyDesc"required></textarea>
+					
+					 <span ng-show="createSurveyForm.surveyDesc.$dirty && createSurveyForm.surveyDesc.$error.required && !createSurveyForm.surveyDesc.$pristine">Please enter survey description!</span>
+					 <!--
+					<div ng-show="createSurveyForm.surveyDesc.$touched && createSurveyForm.surveyDesc.$invalid" class="errormsg">Please enter survey description!</div>-->
+				</div>
+			</div>
+		
+			
+		<div class="row col-sm-12">
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Add Survey Question
+				<span class="caret"></span></button>
+				<ul class="dropdown-menu" name="surveyQues">
+					<li><a ng-click="openQuestionAddingPopup('textInput')">Single Textbox</a></li>
+					<li><a ng-click="openQuestionAddingPopup('radioButton')">One Answer Question</a></li>
+					<li><a ng-click="openQuestionAddingPopup('checkBox')">Multiple Choice Question</a></li>
+					<li><a ng-click="openQuestionAddingPopup('selectBox')">Dropdown</a></li>
+					<li><a ng-click="openQuestionAddingPopup('rating')">Ranking</a></li>
+				</ul>
+				<div ng-show="createSurveyForm.surveyQues.$touched && createSurveyForm.surveyQues.$invalid" class="errormsg">Please choose at lest one survey questions!</div>
+			</div>
+		</div>
+		
+		<div class="row col-sm-12">
+			<div class="grid-list">
+				<ul class="list-group" name="surveyCntrl">
+					<li class="list-group-item" ng-repeat="questionList in questionCollection track by $index">
+					
+						<!-- for textBox-->
+						<div ng-if="questionList.type =='textBox'">
+							<div class="qtitle">
+								<label>Title : </label>
+								<span>{{questionList.qTitle}}</span>
+							</div>
+							<div class="questionsTxt">
+								<label>Question : </label>
+								<span>{{questionList.question}}</span>
+							</div>	
+							<a class="edit-icon" ng-click="editQuestion(questionList)"><i class="glyphicon glyphicon-edit"></i></a>
+						</div>
+						
+						<!-- for radioButton-->
+						<div ng-if="questionList.type =='radioButton'">
+							<div class="qtitle">
+								<label>Title : </label>
+								<span>{{questionList.qTitle}}</span>
+							</div>
+							<div class="questionsTxt">
+								<label>Question : </label>
+								<span>{{questionList.question}}</span>
+							</div>
+							<div class="options">
+								<ul>
+									<li ng-repeat="options in questionList.options">
+										<label>{{options.name}}</label>  						
+									</li>
+								</ul>
+							</div>
+							<a class="edit-icon" ng-click="editQuestion(questionList)"><i class="glyphicon glyphicon-edit"></i></a>
+						</div>
+						
+						<!--for checkBox-->
+						<div ng-if="questionList.type =='checkBox'">
+							<div  class="qtitle">
+								<label>Title : </label>
+								<span>{{questionList.qTitle}}</span>
+							</div>
+							<div class="questionsTxt">
+								<label>Question : </label>
+								<span>{{questionList.question}}</span>
+							</div>
+							<div class="options">
+								<ul>
+									<li ng-repeat="options in questionList.options">
+										<label>{{options.name}}</label>  
+									</li>
+								</ul>
+							</div>
+							<a class="edit-icon" ng-click="editQuestion(questionList)"><i class="glyphicon glyphicon-edit"></i></a>
+						</div>
+						<!-- for selectBox-->
+						<div ng-if="questionList.type =='selectBox'">
+							<div  class="qtitle">
+								<label>Title : </label>
+								<span>{{questionList.qTitle}}</span>
+							</div>
+							<div class="questionsTxt">
+								<label>Question : </label>
+								<span>{{questionList.question}}</span>
+							</div>
+							<div class="options">
+								<ul>
+									<li ng-repeat="options in questionList.options">
+										<label>{{options.name}}</label></span>
+									</li>
+								</ul>
+							</div>
+							<a class="edit-icon" ng-click="editQuestion(questionList)"><i class="glyphicon glyphicon-edit"></i></a>
+						</div>
+
+						<!-- for rating-->
+						
+						<div ng-if="questionList.type =='rating'">
+							<div class="qtitle">
+								<label>Title : </label>
+								<span>{{questionList.qTitle}}</span>
+							</div>
+							<div class="questionsTxt">
+								<label>Question : </label>
+								<span>{{questionList.question}}</span>
+							</div>
+						<a class="edit-icon" ng-click="editQuestion(questionList)"><i class="glyphicon glyphicon-edit"></i></a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="row col-sm-12">
+			<button ng-class="{'disabled': questionCollection.length==0}" class="btn btn-primary" id="userPreview" ng-click="preview()" >User Preview</button> &nbsp;
+
+			<button type="submit" ng-disabled="!createSurveyForm.$valid" ng-class="{'disabled': questionCollection.length==0}" class="btn btn-info" id="surveySave" >Save</button>
+		</div>
+		</form>	
+    </div>
+	<div class="clearfix">&nbsp;</div>
+</div>
+
+<!-- Popup HTML -->
+<!-- Start Text box popup-->
+<div id="textInput" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="qTitle" name="name" placeholder="Enter your question title..." ng-model="queTxtObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="questionText" name="title" placeholder="Enter your question..." ng-model="queTxtObj.question" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="queTxtObj.isRequired" ng-init="queTxtObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitTxtQuestion(queTxtObj, 'textBox')">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!--Edit Text Box Control -->
+	<div id="textBoxEdit" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit : {{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionFormEdit" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" name="edQT" type="text" value="{{questionDetailObj.qTitle}}" ng-model="questionDetailObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edQes" value="{{questionDetailObj.question}}" ng-model="questionDetailObj.question" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" value="isRequired" ng-model="questionDetailObj.isRequired" ng-init="questionDetailObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitEditTxtQuestion()">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Text box popup-->	
+
+<!-- Start Radio button popup-->
+<div id="radioButton" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="queTitle" name="title" placeholder="Enter your question title..." ng-model="queRadObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="question" name="question" placeholder="Enter your question..." ng-model="queRadObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRow()" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRow()" class="btn">-</button>
+						</div>
+                        <div class="col-sm-12" ng-repeat="item in items" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12 radBtnOpt" type="text" name="queOpt_1" placeholder="Enter your option..." ng-model="newRadObject['name'+item]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="queRadObj.isRequired" ng-init="queRadObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitRBQuestion(queRadObj, newObject, 'radioButton')">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+<!-- Edit Mode RadioButton-->
+
+<div id="radioButtonEdit" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit : {{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edQTRD" value="{{questionDetailObj.qTitle}}" ng-model="questionDetailObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edRDquestion" value="{{questionDetailObj.question}}"ng-model="questionDetailObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRowEdit(questionDetailObj)" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRowEdit(questionDetailObj)" class="btn">-</button>
+						</div>
+						
+                        <div class="col-sm-12" ng-repeat="opts in questionDetailObj.options" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12 radBtnOpt" type="text" name="queOpt_1" value="{{opts.name}}" ng-model="opts.name" required>
+						</div>
+						
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="questionDetailObj.isRequired" ng-init="questionDetailObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitEditRBQuestion()">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>	
+	
+<!-- End Radio button popup-->
+
+
+<!-- Start Checkbox popup-->
+<div id="checkBox" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="queTitle" name="title" placeholder="Enter your question title..." ng-model="queChkObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="question" name="question" placeholder="Enter your question..." ng-model="queChkObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRow()" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRow()" class="btn">-</button>
+						</div>
+                        <div class="col-sm-12" ng-repeat="item in items" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12" type="text" id="queDesc" name="queDesc" placeholder="Enter your option..." ng-model="newChkObject['name'+item]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="queChkObj.isRequired" ng-init="queChkObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitCBQuestion(queChkObj, newObject, 'checkBox')">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- Edit Checkbox Popup-->
+	
+	<div id="checkBoxEdit" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit : {{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edCBtitle"
+							value="{{questionDetailObj.qTitle}}" ng-model="questionDetailObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edCBquestion"  
+							value="{{questionDetailObj.question}}" ng-model="questionDetailObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRowEdit(questionDetailObj)" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRowEdit(questionDetailObj)" class="btn">-</button>
+						</div>
+                        <div class="col-sm-12" ng-repeat="opts in questionDetailObj.options" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12" type="text" name="queDesc"
+							value="{{opts.name}}" ng-model="opts.name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="questionDetailObj.isRequired" ng-init="questionDetailObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitEditCBQuestion()">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- End Checkbox popup-->
+
+<!-- Start dropDwon popup-->
+<div id="selectBox" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="queTitle" name="title" placeholder="Enter your question title..." ng-model="queSelObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" id="question" name="question" placeholder="Enter your question..." ng-model="queSelObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRow()" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRow()" class="btn">-</button>
+						</div>
+                        <div class="col-sm-12" ng-repeat="item in items" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12" type="text" id="queDesc" name="queDesc" placeholder="Enter your option..." ng-model="newSelObject['name'+item]" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="queSelObj.isRequired" ng-init="queSelObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitSBQuestion(queSelObj, newObject, 'selectBox')">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- Edit SelectBox Popup-->
+	<div id="selectBoxEdit" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit : {{heading}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="myQuestionForm" class="form-horizontal" novalidate>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edSBtitle" value="{{questionDetailObj.qTitle}}" ng-model="questionDetailObj.qTitle" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input class="form-control" type="text" name="edSBquestion" value="{{questionDetailObj.question}}" ng-model="questionDetailObj.question" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<div class="col-sm-12">
+							<span>Add Row </span>
+							<button ng-click="addRowEdit(questionDetailObj)" class="btn" style="margin-right: 15px;">+</button>
+							<span>Delete Row </span>
+							<button ng-click="deleteRowEdit(questionDetailObj)" class="btn">-</button>
+						</div>
+                        <div class="col-sm-12" ng-repeat="opts in questionDetailObj.options" style="margin-top: 15px;">
+                            <input class="form-control col-sm-12" type="text" name="queDesc" value="{{opts.name}}" ng-model="opts.name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6"> 
+                        <input type="checkbox" ng-model="questionDetailObj.isRequired" ng-init="questionDetailObj.isRequired"> is required
+                        </label>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="submitEditSBQuestion()">Submit</button>
+                    <button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+<!-- End dropDwon popup-->
+
+<!-- Start Rating popup-->
+<div id="rating" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{{heading}}</h3>
+			</div>
+			<div class="modal-body">
+				<form name="myQuestionForm" class="form-horizontal" novalidate>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input class="form-control" type="text" id="qTitle" name="name" placeholder="Enter your question title" ng-model="queRatObj.qTitle" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input class="form-control" type="text" id="questionText" name="title" placeholder="Enter your question" ng-model="queRatObj.question" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-6"> 
+						<input type="checkbox" ng-model="queRatObj.isRequired" ng-init="queRatObj.isRequired"> is required
+						</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" ng-click="submitRTQuestion(queRatObj, 'rating')">Submit</button>
+				<button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Edit Mode Rating Control-->
+<div id="ratingEdit" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Edit : {{heading}}</h3>
+			</div>
+			<div class="modal-body">
+				<form name="myQuestionForm" class="form-horizontal" novalidate>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input class="form-control" type="text" name="edRatTit" 
+							value="{{questionDetailObj.qTitle}}" ng-model="questionDetailObj.qTitle" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input class="form-control" type="text" name="edRatQue" 
+							value="{{questionDetailObj.question}}" ng-model="questionDetailObj.question" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-6"> 
+						<input type="checkbox" ng-model="questionDetailObj.isRequired" ng-init="questionDetailObj.isRequired"> is required
+						</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" ng-click="submitEditRatQuestion()">Submit</button>
+				<button class="btn btn-primary" ng-click="cancelQuestion()">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- End Rating popup-->	
+
+
+<!-- Preview mode -->
+<div id="previewMode" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header"><h4>{{surveyName.sname}}</h4></div>
+			<div class="modal-body">
+			<h5>{{surveyDesc.sname}}</h5>	
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="questionList in questionCollection track by $index">
+					<div ng-if="questionList.type =='textBox'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span>
+						<br><br>
+						<input type="text" class="form-control"/>
+						</div>
+					</div>
+					<!-- for radioButton-->
+					<div ng-if="questionList.type =='radioButton'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="radio" class="radBtnOpt" name="queOpt_1" value="{{options.name}}"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!--for checkBox-->
+					<div ng-if="questionList.type =='checkBox'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="checkbox" value="{{options.name}}"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- for selectBox-->
+					<div ng-if="questionList.type =='selectBox'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<select>
+							<option ng-repeat="options in questionList.options" value="{{options.name}}">{{options.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- for rating-->
+					<div ng-if="questionList.type =='rating'">
+						<div class="questionsTxt">
+							<label>Question : </label>
+							<span>{{questionList.question}}</span></div>
+						 <jk-rating-stars rating="firstRate" ></jk-rating-stars>
+					</div>
+
+				</li>
+			</ul>
+			</div>	
+			<div class="modal-footer">
+				 <button class="btn btn-primary" ng-click="cancelPreview()">Cancel</button>
+			</div>	
+		</div>
+	</div>		
+</div>

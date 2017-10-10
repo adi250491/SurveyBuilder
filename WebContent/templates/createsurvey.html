@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html ng-app="myModalApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Survey</title>
+    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+<link rel="stylesheet" href="../css/style.css" type="text/css"></link>
+
+<link rel="stylesheet" href="../css/lib/bootstrap.min.css" type="text/css"></link>
+<link rel="stylesheet" href="../css/lib/font-awesome.css" type="text/css"></link>
+
+    <script type="text/javascript" th:src= "@{js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{js/lib/jquery-1.12.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/lib/angular.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/lib/angular-route.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/lib/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{js/app.js}"></script>
+    <script type="text/javascript" th:src="@{js/modules/Survey/app-modal.controller.js}"></script>
+    <script type="text/javascript" th:src="@{js/jquery-1.8.3.js}"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    
+    
+
+</head>
+
+<body ng-controller="appModalController">
+   <div id="header">
+            <h1>
+				<a href="#">Survey <strong>Website</strong></a>
+				<span>Create your own survey</span>
+			</h1>
+            <div class="clear"></div>
+        </div>
+    <div id="container">
+        
+        <div id="nav">
+            <ul class="sf-menu dropdown">
+                <li class="selected"><a href="index.html">Home</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="contactus.html">Contact mm</a></li>
+                <li><a href="SurveyAdd.html">Create Survey</a></li>
+                <li><a href="SurveyList.html">All Surveys</a></li>
+                <li><a href="adminlogin.html">Sign out</a></li>
+            </ul>
+        </div>
+        
+        
+       	<div ng-view=''></div>
+ 		<br></br>
+        <div class="clear"></div>
+        
+    </div>
+    
+    <div id="footer">
+        <div class="footer-content">
+
+            <div class="footer-box">
+                <h4>About our site</h4>
+
+                <p>
+                    Morbi fermentum, nunc id pellentesque blandit, lectus velit pellentesque nisl, a condimentum est velit sed nisi. Sed libero velit, eleifend nec porttitor a, porta quis leo. In hac habitasse platea dictumst. 
+                </p>
+            </div>
+
+            <div class="footer-box">
+                <h4>Categories</h4>
+
+                <ul>
+                    <li><a href="#">Lorem ipsum dolor sit amet.</a></li>
+                    <li><a href="#">Quisque consequat nunc a felis.</a></li>
+                    <li><a href="#">Suspendisse consequat magna at.</a></li>
+                    <li><a href="#">Etiam eget diam id ligula rhoncus.</a></li>
+                    <li><a href="#">Sed in mauris non nibh.</a></li>
+
+                </ul>
+            </div>
+
+
+            <div class="footer-box">
+
+                <h4>Network sites</h4>
+                <ul>
+                    <li><a href="http://zypopwebtemplates.com">ZyPOP web templates</a></li>
+                    <li><a href="http://www.justfreetemplates.com" title="free web templates">Free web templates</a></li>
+
+                    <li><a href="http://www.awesomestyles.com/mybb-themes" title="mybb themes">MyBB themes</a></li>
+                    <li><a href="http://www.awesomestyles.com" title="free phpbb3 themes">phpBB3 styles</a></li>
+                </ul>
+            </div>
+
+
+            <div class="clear"></div>
+        </div>
+        <div id="footer-links">
+
+            <!-- A link to http://www.zypopwebtemplates.com must remain. To remove link see http://www.zypopwebtemplates.com/licensing -->
+            <p>&copy; www.survey.com 2017.</p>
+        </div>
+    </div>
+
+</body>
+</html>

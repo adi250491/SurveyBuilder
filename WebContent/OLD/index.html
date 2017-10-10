@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Survey</title>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet/less" type="text/css" href="css/custom.less" />
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/less.min.js"></script>
+<script>
+$(document).ready(function() {
+
+$('#question_type').change(function () {
+	if ($(this).val() == "txt_box") {
+		$('#txt_box_dialog').modal('show');
+	}
+});
+
+
+
+
+/*
+  $("#add_Row").click(function() {
+		$('.mcq_btnSection').append(
+		'<tr><td><input type="checkbox" class="check_box"/></td> \
+			<td><input type="text"     class="index_txtBox"/></td>\
+			<td><input type="text"     class="txt_Box"/></td>\
+			\
+		');
+	
+		$('.sing_ques').append(
+		'<tr><td><input type="checkbox" class="check_box"/></td> \
+			<td><input type="text"     class="index_txtBox"/></td>\
+			<td><input type="text"     class="txt_Box"/></td>\
+			\
+		');
+			
+  });
+  
+  $("#delete_Row").click(function() {
+    if ($(".mcq_btnSection tr").length != 0) {
+      $(".mcq_btnSection tr:last-child").remove();
+    } else {
+      alert("Now table is empty");
+    }
+  })*/
+  
+	
+  
+});
+
+</script>
+
+
+</head>
+
+<body>
+<div>Hi This is Survey Start Test...!</div>
+<br><br>
+
+<div id="question" class="c_question">
+	<textarea placeholder="Put Your Question Here" required="required"></textarea>
+</div><br><br>
+
+
+<select id="question_type" class="c_q_type">
+	<option value="choose">Choose...</option>
+	<option value="txt_box">Text Box</option>
+	<option value="txt_area">Text Area</option>
+	<option value="rbtn">Radio Button</option>
+	<option value="chk_box">Checkbox</option>
+	<option value="select_box">Select Box</option>
+	<option value="rating">Rating</option>
+</select>
+
+
+
+<br><br>
+
+<!-- Start Modal for Input Field-->
+<div id="txt_box_dialog" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add input field here</h4>
+      </div>
+      <div class="modal-body">
+        <div class="add_txt">
+			<div class="">
+				<p><textarea col="2" placeholder="Write Your Question Here"></textarea></p>
+			</div><br><br>
+			<div class="add_txt_btn">
+				&nbsp;&nbsp;Add Row: <button onclick="addRow('type_text')">+</button>
+				&nbsp;&nbsp;Delete Row: <button onclick="deleteRow('type_text')">-</button>
+			</div><br><br>
+			<table id="type_text">
+				<tr>
+					<td><input type="text" placeholder="Type Lable Name Here"/></td>
+				</tr>
+			</table>
+			<br><br>
+			&nbsp;&nbsp;<button>Submit</button>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Modal for Input Field-->
+
+
+
+
+
+
+
+<br><br>
+<div class="mcq_ques">
+	<div class="mcq_btnSection">
+		<input type="button" id="add_Row" value="Add Row" />
+		<input type="button" id="delete_Row" value="Delete Row" />
+	</div>
+	<table class="tbl_mcq"></table>
+</div>
+
+<br><br>
+<div class="sing_ques">
+	<div class="sing_btnSection">
+		<input type="button" id="add_Row" value="Add Row" />
+		<input type="button" id="delete_Row" value="Delete Row" />
+	</div>
+	<table class="tbl_mcq"></table>
+</div>
+<br><br>
+<table class="test">
+
+</table>
+
+
+<br>
+	<button>Save</button> &nbsp; <button>Reset</button>
+	
+	
+<script>
+	function addRow(getClickedElement) {
+		if(getClickedElement== 'type_text'){
+			$('#type_text').append('<tr><td><input type="text" placeholder="Type Lable Name Here"/></td>');
+			$("#type_text td").each(function(i) {
+				this.addClass("type_text"+(i+1));
+			});
+		}
+	}
+	$("#delete_Row").click(function() {
+    if ($(".mcq_btnSection tr").length != 0) {
+      $(".mcq_btnSection tr:last-child").remove();
+    } else {
+      alert("Now table is empty");
+    }
+	
+	function delRow(getClickedElement){
+		if(getClickedElement== 'type_text'){
+			
+		}
+	}
+</script>	
+	
+</body>
+
+</html>

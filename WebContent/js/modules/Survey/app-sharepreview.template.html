@@ -1,0 +1,68 @@
+<div class="shareSurvey">
+	<div id="sub-header" style="margin-bottom: 30px;">
+	<form name="submitSurvey" novalidate>
+		<h2>Survey - {{surveyName.sname}}</h2>
+		<div class="userPreview col-sm-10" style="float:left;">
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="questionList in questionCollection track by $index">
+					<div ng-if="questionList.type =='textBox'">
+						<div class="questionsTxt"><label>Question : </label>
+						<span name="questionList.question">{{questionList.question}}</span>
+						<br><br>
+						<input type="text" class="form-control" placeholder="Type answer here..." ng-model="qansObj[questionList.question]" name="txtBoxQues_{{$index}}" required>
+						</div>
+					</div>
+					<!-- for radioButton-->
+					<div ng-if="questionList.type =='radioButton'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="radio" class="radBtnOpt" name="{{questionList.question}}" value="{{options.name}}" ng-model="qansObj[questionList.question]" ng-required="!radioBtnData"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!--for checkBox-->
+					<div ng-if="questionList.type =='checkBox'">
+						<div class="questionsTxt"><label>Question : </label>
+						<span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="checkbox" value="{{options.name}}" ng-model="qansCBObj[options.name]" ng-required="!chkBoxData"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- for selectBox-->
+					<div ng-if="questionList.type =='selectBox'">
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<select ng-model="qansObj[questionList.question]" >
+							<option ng-repeat="options in questionList.options" value="{{options.name}}">{{options.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- for rating-->
+					<div ng-if="questionList.type =='rating'">
+						<div class="questionsTxt">
+							<label>Question : </label>
+							<span>{{questionList.question}}</span></div>
+						  <jk-rating-stars max-rating="10" rating="secondRate" ></jk-rating-stars>
+							<div style="width: 100px">{{secondRate}} Stars
+					</div>
+
+				</li>
+			</ul>
+			<div class="" style="margin-left: 37px;">
+				<button class="btn btn-primary" type="button" ng-click="submitSurveyData(qansObj, qansCBObj);" >Save</button>
+			</div>			
+		</div>
+	</form>	
+    </div>
+<div class="clearfix">&nbsp;</div>
+</div>

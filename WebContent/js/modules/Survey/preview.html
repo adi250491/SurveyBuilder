@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        body
+        {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('MyChildApp', [])
+        app.controller('MyChildController', function ($scope, $window) {
+            $scope.Name = $window.Name;
+        });
+    </script>
+    <div ng-app="MyChildApp" ng-controller="MyChildController">
+        Name: <span ng-bind="Name"></span>
+    </div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- Preview mode -->
+<div id="previewMode" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header"><h4>{{surveyName.sname}}</h4></div>
+			<div class="modal-body">
+				
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="questionList in questionCollection track by $index">
+					<div ng-if="questionList.type =='textBox'">
+						<div class="qtitle"><label>Question Title : </label><span>{{questionList.qTitle}}</span></div>
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span>
+						<br><br>
+						<input type="text" class="form-control"/>
+						</div>
+					</div>
+					<!-- for radioButton-->
+					<div ng-if="questionList.type =='radioButton'">
+						<div class="qtitle"><label>Question Title : </label><span>{{questionList.qTitle}}</span></div>
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="radio" value="{{options.name}}"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!--for checkBox-->
+					<div ng-if="questionList.type =='checkBox'">
+						<div  class="qtitle"><label>Question Title : </label><span>{{questionList.qTitle}}</span></div>
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<ul>
+								<li ng-repeat="options in questionList.options">
+								<input type="checkbox" value="{{options.name}}"> 
+								<label>{{options.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- for selectBox-->
+					<div ng-if="questionList.type =='selectBox'">
+						<div  class="qtitle"><label>Question Title : </label><span>{{questionList.qTitle}}</span></div>
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+						<div class="options">
+							<select multiple>
+							<option ng-repeat="options in questionList.options" value="{{options.name}}">{{options.name}}</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- for rating-->
+					<div ng-if="questionList.type =='rating'">
+						<div class="qtitle"><label>Question Title : </label><span>{{questionList.qTitle}}</span></div>
+
+						<div class="questionsTxt"><label>Question : </label><span>{{questionList.question}}</span></div>
+					</div>
+
+				</li>
+			</ul>
+			</div>	
+			<div class="modal-footer">
+				 <button class="btn btn-primary" ng-click="cancelPreview()">Cancel</button>
+			</div>	
+		</div>
+	</div>		
+</div>
+</body>
+</html>
+
+
+
+

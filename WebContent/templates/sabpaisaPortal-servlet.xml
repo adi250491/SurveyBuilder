@@ -1,0 +1,124 @@
+
+<beans xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation=" 
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"> -->
+
+
+	<!-- <mvc:annotation-driven/> -->
+	<!-- <context:component-scan base-package="com.dex.services.controller" 
+		/> -->
+	<mvc:annotation-driven />
+
+	<!-- <mvc:message-converters /> <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"> 
+		<property name="prefixJson" value="true"/> <property name="supportedMediaTypes" 
+		value="application/json"/> <property name="objectMapper"> <bean class="com.fasterxml.jackson.databind.ObjectMapper"> 
+		<property name="serializationInclusion" value="NON_NULL"/> </bean> </property> 
+		</bean> </mvc:message-converters> -->
+
+
+
+
+
+
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<!-- <context:property-placeholder location="classpath:db.properties" /> -->
+	<context:component-scan base-package="com.domain.Survey.*" />
+<!-- 	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+
+
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/survey" />
+		<property name="properties">
+			<props>
+				<prop key="c3p0.minPoolSize">0</prop>
+				<prop key="hc3p0.maxPoolSize">1000</prop>
+				<prop key="hc3p0.timeout">3000</prop>
+				<prop key="c3p0.acquire_increment">10</prop>
+				<prop key="c3p0.max_statement">50</prop>
+
+				<prop key="hibernate.c3p0.idle_test_period">60</prop>
+				<prop key="c3p0.preferredTestQuery">SELECT 1;</prop>
+				<prop key="hibernate.c3p0.testConnectionOnCheckout">false</prop>
+				<prop key="user">root</prop>
+			    <prop key="password">Dspl_2015</prop>
+				
+			</props>
+		</property>
+
+		<!-- <property name="user" value="root" /> <property name="password" value="root" 
+			/> these are C3P0 properties pool sizing <property name="initialPoolSize" 
+			value="3" /> <property name="minPoolSize" value="6" /> <property name="maxPoolSize" 
+			value="25" /> <property name="acquireIncrement" value="3" /> <property name="maxStatements" 
+			value="50" /> retries <property name="acquireRetryAttempts" value="30" /> 
+			<property name="acquireRetryDelay" value="1000" /> 1s <property name="breakAfterAcquireFailure" 
+			value="false" /> refreshing connections <property name="maxIdleTime" value="180" 
+			/> 3min timeouts and testing <property name="checkoutTimeout" value="10000" 
+			/> 10s <property name="idleConnectionTestPeriod" value="60" /> 60 <property 
+			name="testConnectionOnCheckout" value="true" /> <property name="preferredTestQuery" 
+			value="SELECT 1" /> <property name="testConnectionOnCheckin" value="true" 
+			/> -->
+
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+	</bean>
+
+
+
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> 
+		<property name="messageConverters"> <list> <ref bean="jsonMessageConverter" 
+		/> </list> </property> </bean> -->
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonMessageConverter" />
+				<ref bean="xmlMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+
+	<bean id="xmlMessageConverter"
+		class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter">
+	</bean>
+
+	<bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean>
+</beans>
